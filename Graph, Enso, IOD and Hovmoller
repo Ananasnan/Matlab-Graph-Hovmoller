@@ -1,0 +1,667 @@
+%ONI Graph
+PositiveIndexes = ONI > 0;
+NegativeIndexes = ONI < 0;
+BarONI = bar (y(PositiveIndexes), ONI(PositiveIndexes), 'r', 'barwidth', 1);
+BarONI.EdgeColor = 'none';
+hold on;
+BarONI = bar (y(NegativeIndexes), ONI(NegativeIndexes), 'b', 'barwidth', 1);
+BarONI.EdgeColor = 'none';
+view([90, -90]);
+xtickangle(90)
+xticks(1:60:252);
+xticklabels({'1997','2002','2007','2012','2017'});
+title('Ocean Nino Index');
+
+%DMI Graph
+PositiveIndexes = DMI > 0;
+NegativeIndexes = DMI < 0;
+BarDMI = bar (y(PositiveIndexes), DMI(PositiveIndexes), 'r', 'barwidth', 1);
+hold on;
+BarDMI = bar (y(NegativeIndexes), DMI(NegativeIndexes), 'b', 'barwidth', 1);
+BarDMI.EdgeColor = 'none';
+view([90, -90]);
+xticks(1:60:252);
+xticklabels({'1997','2002','2007','2012','2017'});
+title('Dipole Mode Index');
+xtickangle(90)
+
+%Creating Base SLHA Data
+data = 'dataset.nc';
+lon = ncread(data, 'longitude');
+lat = ncread(data, 'latitude');
+slalong = ncread(data, 'sla');
+slalong = fliplr(slalong);
+slalong = rot90(slalong);
+c = load('coast');
+
+%Extracting & Averaging Yearly Data From Base Data
+slajan = slalong(:,:,1:12:252);
+slafeb = slalong(:,:,2:12:252);
+slamar = slalong(:,:,3:12:252);
+slaapr = slalong(:,:,4:12:252);
+slamay = slalong(:,:,5:12:252);
+slajun = slalong(:,:,6:12:252);
+slajul = slalong(:,:,7:12:252);
+slaaug = slalong(:,:,8:12:252);
+slasep = slalong(:,:,9:12:252);
+slaoct = slalong(:,:,10:12:252);
+slanov = slalong(:,:,11:12:252);
+sladec = slalong(:,:,12:12:252);
+slajan = mean(slajan, 3);
+slafeb = mean(slafeb, 3);
+slamar = mean(slamar, 3);
+slaapr = mean(slaapr, 3);
+slajun = mean(slajun, 3);
+slajul = mean(slajul, 3);
+slaaug = mean(slaaug, 3);
+slasep = mean(slasep, 3);
+slaoct = mean(slaoct, 3);
+slanov = mean(slanov, 3);
+sladec = mean(sladec, 3);
+slamay = mean(slamay, 3);
+
+&Creating Yearly Average SLHA Map
+Januari = pcolor(lon, lat, slajan);
+hold on
+plot(c.long, c.lat, 'k');
+Januari.EdgeColor = 'none'
+Januari.EdgeColor = 'none';
+Januari.FaceColor = 'interp';
+title('Januari');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+
+Februari = pcolor(lon, lat, slafeb);
+hold on
+plot(c.long, c.lat, 'k');
+Februari.EdgeColor = 'none'
+Februari.FaceColor = 'interp';
+title('Februari');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+
+Maret = pcolor(lon, lat, slamar);
+hold on
+plot(c.long, c.lat, 'k');
+Maret.EdgeColor = 'none';
+Maret.FaceColor = 'interp';
+title('Maret');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+
+April = pcolor(lon, lat, slaapr);
+hold on
+plot(c.long, c.lat, 'k');
+April.EdgeColor = 'none';
+April.FaceColor = 'interp';
+title('April');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+
+Juli = pcolor(lon, lat, slajul);
+hold on
+plot(c.long, c.lat, 'k');
+Juli.EdgeColor = 'none';
+Juli.FaceColor = 'interp';
+title('Juli');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+
+Juni = pcolor(lon, lat, slajun);
+hold on
+plot(c.long, c.lat, 'k');
+Juni.EdgeColor = 'none';
+Juni.FaceColor = 'interp';
+title('Juni');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+
+Agustus = pcolor(lon, lat, slaaug);
+hold on
+plot(c.long, c.lat, 'k');
+Agustus.EdgeColor = 'none';
+Agustus.FaceColor = 'interp';
+title('Agustus');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+
+September = pcolor(lon,lat, slasep);
+hold on
+plot(c.long, c.lat, 'k');
+September.EdgeColor = 'none';
+September.FaceColor = 'interp';
+title('September');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+
+Oktober = pcolor(lon, lat, slaoct);
+hold on;
+plot(c.long, c.lat, 'k');
+Oktober.EdgeColor = 'none';
+Oktober.EdgeColor = 'interp';
+title('Oktober');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+
+November = pcolor(lon, lat, slanov);
+hold on
+plot(c.long, c.lat, 'k');
+November.EdgeColor = 'none';
+November.FaceColor = 'interp';
+title('November');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+
+Desember = pcolor(lon, lat, sladec);
+hold on
+plot(c.long, c.lat, 'k');
+Desember.EdgeColor = 'none';
+Desember.FaceColor = 'interp';
+title('Desember');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+
+%Creating StDev Data From Base Data
+j = slalong(:,:,1:12:252);
+f = slalong(:,:,2:12:252);
+m = slalong(:,:,3:12:252);
+a = slalong(:,:,4:12:252);
+me = slalong(:,:,5:12:252);
+jn = slalong(:,:,6:12:252);
+jl = slalong(:,:,7:12:252);
+ag = slalong(:,:,8:12:252);
+s = slalong(:,:,9:12:252);
+o = slalong(:,:,10:12:252);
+n = slalong(:,:,11:12:252);
+d = slalong(:,:,12:12:252);
+
+j = std(j, 0, [3]);
+f = std(f, 0, [3]);
+m = std(m, 0, [3]);
+a = std(a, 0, [3]);
+me = std(me, 0, [3]);
+jn = std(jn, 0, [3]);
+jl = std(jl, 0, [3]);
+ag = std(ag, 0, [3]);
+s = std(s, 0, [3]);
+o = std(o, 0, [3]);
+n = std(n, 0, [3]);
+d = std(d, 0, [3]);
+
+%Creating StDev Map
+sj = pcolor(lon, lat, j);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title({'Standar Deviasi','Januari 1997-2017'});
+sj.EdgeColor = 'none';
+sj.FaceColor = 'interp';
+
+sf = pcolor(lon, lat, f);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title({'Standar Deviasi','Februari 1997-2017'});
+sf.EdgeColor = 'none';
+sf.FaceColor = 'interp';
+
+sj = pcolor(lon, lat, j);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title({'Standar Deviasi','Januari 1997-2017'});
+sj.EdgeColor = 'none';
+sj.FaceColor = 'interp';
+
+sm = pcolor(lon, lat, m);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title({'Standar Deviasi','Maret 1997-2017'});
+sm.EdgeColor = 'none';
+sm.FaceColor = 'interp';
+
+sa = pcolor(lon, lat, a);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title({'Standar Deviasi','April 1997-2017'});
+sa.EdgeColor = 'none';
+sa.FaceColor = 'interp';
+
+sme = pcolor(lon, lat, me);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title({'Standar Deviasi','Mei 1997-2017'});
+sme.EdgeColor = 'none';
+sme.FaceColor = 'interp';
+
+sjl = pcolor(lon, lat, jl);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title({'Standar Deviasi','Juli 1997-2017'});
+sjl.EdgeColor = 'none';
+sjl.FaceColor = 'interp';
+
+sjn = pcolor(lon, lat, jn);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title({'Standar Deviasi','Juni 1997-2017'});
+sjn.EdgeColor = 'none';
+sjn.FaceColor = 'interp';
+
+sag = pcolor(lon, lat, ag);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title({'Standar Deviasi','Agustus 1997-2017'});
+sag.EdgeColor = 'none';
+sag.FaceColor = 'interp';
+
+ss = pcolor(lon, lat, s);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title({'Standar Deviasi','September 1997-2017'});
+ss.EdgeColor = 'none';
+ss.FaceColor = 'interp';
+
+so = pcolor(lon, lat, o);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title({'Standar Deviasi','Oktober 1997-2017'});
+so.EdgeColor = 'none';
+so.FaceColor = 'interp';
+
+sn = pcolor(lon, lat, n);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title({'Standar Deviasi','November 1997-2017'});
+sn.EdgeColor = 'none';
+sn.FaceColor = 'interp';
+
+sd = pcolor(lon, lat, d);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title({'Standar Deviasi','Desember 1997-2017'});
+sd.EdgeColor = 'none';
+sd.FaceColor = 'interp';
+
+%Creating Hovmoller Diagram From Base Data
+slah = slalong(1:5,43:59,:);
+slah = mean(slah);
+slah = reshape(permute(slah,[1, 3, 2]), [], size(slah,2));
+hov = pcolor(lonh,y,slah);
+hov.EdgeColor = 'none';
+yticks(1:12:252);
+yticklabels({'1997','1998','1999','2000','2001','2002','2003','2004','2005','2006','2007','2008','2009','2010','2011','2012','2013','2014','2015','2016','2017','2018'});
+ylabel ('Tahun');
+xlabel ('Garis Bujur');
+colorbar
+camroll(-90);
+colorbar('northoutside');
+xtickangle(90);
+ytickangle(90);
+ylabel ('Tahun', 'rotation', 90);
+
+%Extracting ENSO Data From Base Data
+e1 = slalong(:,:,12);
+e2 = slalong(:,:,71);
+e3 = slalong(:,:,96);
+e4 = slalong(:,:,119);
+e5 = slalong(:,:,156);
+e6 = slalong(:,:,216);
+e7 = slalong(:,:,228);
+l1 = slalong(:,:,24);
+l2 = slalong(:,:,36);
+l3 = slalong(:,:,49);
+l4 = slalong(:,:,109);
+l5 = slalong(:,:,132);
+l6 = slalong(:,:,145);
+l7 = slalong(:,:,167);
+l8 = slalong(:,:,239);
+l9 = slalong(:,:,252);
+
+%Creating Averaged ENSO Map
+elni = ((e1+e2+e3+e4+e5+e6+e7)/7);
+lanin = ((l1+l2+l3+l4+l5+l6+l7+l8+l9)/9);
+
+pel = pcolor(lon, lat, elni);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('Rata-Rata Kejadian El Nino');
+pel.EdgeColor = 'none';
+pel.FaceColor = 'interp';
+
+pla = pcolor(lon, lat, lanin);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('Rata-Rata Kejadian La Nina');
+pla.EdgeColor = 'none';
+pla.FaceColor = 'interp';
+
+%Creating ENSO Map
+pe97 = pcolor(lon, lat, e1);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('Desember 1997');
+pe97.EdgeColor = 'none';
+pe97.FaceColor = 'interp';
+
+pel02 = pcolor(lon, lat, e2);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('November 2002');
+pe02.EdgeColor = 'none';
+pe02.FaceColor = 'interp';
+
+pel04 = pcolor(lon, lat, e3);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('Desember 2004');
+pe04.EdgeColor = 'none';
+pe04.FaceColor = 'interp';
+
+pe06 = pcolor(lon, lat, e4);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('November 2006');
+pe06.EdgeColor = 'none';
+pe06.FaceColor = 'interp';
+
+pe09 = pcolor(lon, lat, e5);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('Desember 2009');
+pe09.EdgeColor = 'none';
+pe09.FaceColor = 'interp';
+
+pe14 = pcolor(lon, lat, e6);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('Desember 2014');
+pe14.EdgeColor = 'none';
+pe14.FaceColor = 'interp';
+
+pe15 = pcolor(lon, lat, e7);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('Desember 2015');
+pe15.EdgeColor = 'none';
+pe15.FaceColor = 'interp';
+
+pl98 = pcolor(lon, lat, l1);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('Desember 1998');
+pl98.EdgeColor = 'none';
+pl98.FaceColor = 'interp';
+
+pl99 = pcolor(lon, lat, l2);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('Desember 1999');
+pl99.EdgeColor = 'none';
+pl99.FaceColor = 'interp';
+
+pl01 = pcolor(lon, lat, l3);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('Januari 2001');
+pl01.EdgeColor = 'none';
+pl01.FaceColor = 'interp';
+
+pl06 = pcolor(lon, lat, l4);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('Januari 2006');
+pl06.EdgeColor = 'none';
+pl06.FaceColor = 'interp';
+
+pl07 = pcolor(lon, lat, l5);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('Desember 2007');
+pl07.EdgeColor = 'none';
+pl07.FaceColor = 'interp';
+
+pl09 = pcolor(lon, lat, l6);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('Januari 2009');
+pl09.EdgeColor = 'none';
+pl09.FaceColor = 'interp';
+
+pl10 = pcolor(lon, lat, l7);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('November 2010');
+pl10.EdgeColor = 'none';
+pl10.FaceColor = 'interp';
+
+pl16 = pcolor(lon, lat, l8);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('November 2016');
+pl16.EdgeColor = 'none';
+pl16.FaceColor = 'interp';
+
+pl17 = pcolor(lon, lat, l9);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('Desember 2017');
+pl17.EdgeColor = 'none';
+pl17.FaceColor = 'interp';
+
+%Extracting IODM Data From Base Data
+s97 = slalong(:,:,9);
+s06 = slalong(:,:,117);
+s12 = slalong(:,:,189);
+s15 = slalong(:,:,225);
+s98 = slalong(:,:,21);
+s10 = slalong(:,:,165);
+s14 = slalong(:,:,213);
+s16 = slalong(:,:,237);
+
+%Creating IODM Averaged SLHA Map
+iodp = ((s06+s12+s15+s97)/4);
+iodm = ((s98+s10+s14+s16)/4);
+
+%Creating IODM Map
+piodm = pcolor(lon, lat, iodm);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('Rata-Rata IOD Negatif(-)');
+piodm.EdgeColor = 'none';
+piodm.FaceColor = 'interp';
+
+piodp = pcolor(lon, lat, iodp);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('Rata-Rata IOD Positif(+)');
+piodp.EdgeColor = 'none';
+piodp.FaceColor = 'interp';
+
+%Creating IODM SLHA Map
+ps97 = pcolor(lon, lat, s97);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('September 1997');
+ps97.EdgeColor = 'none';
+ps97.FaceColor = 'interp';
+
+ps06 = pcolor(lon, lat, s06);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('September 2006');
+ps06.EdgeColor = 'none';
+ps06.FaceColor = 'interp';
+
+ps12 = pcolor(lon, lat, s12);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('September 2012');
+ps12.EdgeColor = 'none';
+ps12.FaceColor = 'interp';
+
+ps15 = pcolor(lon, lat, s15);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('September 2015');
+ps15.EdgeColor = 'none';
+ps15.FaceColor = 'interp';
+
+ps98 = pcolor(lon, lat, s98);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('September 1998');
+ps98.EdgeColor = 'none';
+ps978.FaceColor = 'interp';
+
+ps10 = pcolor(lon, lat, s10);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('September 2010');
+ps10.EdgeColor = 'none';
+ps10.FaceColor = 'interp';
+
+ps14 = pcolor(lon, lat, s14);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('September 2014');
+ps14.EdgeColor = 'none';
+ps14.FaceColor = 'interp';
+
+ps16 = pcolor(lon, lat, s16);
+hold on
+plot(c.long, c.lat, 'k');
+xlabel('Longitude');
+ylabel('Latitude');
+colorbar;
+title('September 2016');
+ps16.EdgeColor = 'none';
+ps16.FaceColor = 'interp';
